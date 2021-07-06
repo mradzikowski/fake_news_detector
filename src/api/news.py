@@ -28,9 +28,6 @@ class NewsList(Resource):
         response_object = {}
 
         news = News.query.filter_by(title=title).first()
-        if news:
-            response_object['message'] = 'Sorry. That title already exists.'
-            return response_object, 400
 
         db.session.add(News(title=title, url=url, credibility=credibility))
         db.session.commit()
@@ -39,5 +36,19 @@ class NewsList(Resource):
 
         return response_object, 201
 
+    @api.marshal_with(news, as_list=True)
+    def get(self):
+        return News.query.all(), 200
+
+
+class _News(Resource):
+    @api.marshal_with(news)
+    def get(self, news_id):
+        news = News.query.filter_by(id=news_id).first()
+        if not news:
+            api.abort(404, f"News {news_id} does not exist")
+        return news, 200
+
 
 api.add_resource(NewsList, '/news')
+api.add_resource(_News, '/news/<int:news_id>')
