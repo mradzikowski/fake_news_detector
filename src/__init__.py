@@ -2,11 +2,10 @@ from flask import Flask, jsonify
 from flask_restx import Resource, Api
 import os
 from flask_sqlalchemy import SQLAlchemy
-from datetime import datetime
-
 
 
 db = SQLAlchemy()
+
 
 def create_app(script_info=None):
     app = Flask(__name__)
@@ -17,7 +16,9 @@ def create_app(script_info=None):
     db.init_app(app)
 
     from src.api.ping import ping_blueprint
+    from src.api.news import news_blueprint
     app.register_blueprint(ping_blueprint)
+    app.register_blueprint(news_blueprint)
 
     @app.shell_context_processor
     def ctx():
