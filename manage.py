@@ -16,5 +16,12 @@ def recreate_db():
     db.session.commit()
 
 
+@cli.command('seed_db')
+def seed_db():
+    db.session.add(News(title="Poland is the best", url="thebestinpoland.com", credibility=2.0))
+    db.session.add(News(title="Deforestation has been the most influenced by Brazil.", url="news.com", credibility=6.0))
+    db.session.commit()
+
+
 if __name__ == "__main__":
     cli()
