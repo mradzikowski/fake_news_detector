@@ -1,9 +1,8 @@
 from flask import Blueprint, request
-from flask_restx import Resource, Api, fields
+from flask_restx import Api, Resource, fields
 
 from src import db
 from src.api.models import News
-
 
 news_blueprint = Blueprint("news", __name__)
 api = Api(news_blueprint)

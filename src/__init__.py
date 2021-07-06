@@ -1,7 +1,7 @@
-from flask import Flask
 import os
-from flask_sqlalchemy import SQLAlchemy
 
+from flask import Flask
+from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
 
@@ -14,8 +14,8 @@ def create_app(script_info=None):
 
     db.init_app(app)
 
-    from src.api.ping import ping_blueprint
     from src.api.news import news_blueprint
+    from src.api.ping import ping_blueprint
 
     app.register_blueprint(ping_blueprint)
     app.register_blueprint(news_blueprint)
