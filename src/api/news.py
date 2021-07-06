@@ -50,6 +50,19 @@ class _News(Resource):
             api.abort(404, f"News {news_id} does not exist")
         return news, 200
 
+    def delete(self, news_id):
+        response_object = {}
+        news = News.query.filter_by(id=news_id).first()
+
+        if not news:
+            api.abort(404, f"News {news_id} does not exist")
+
+        db.session.delete(news)
+        db.session.commit()
+
+        response_object["message"] = f"{news.title} was removed!"
+        return response_object, 200
+
 
 api.add_resource(NewsList, "/news")
 api.add_resource(_News, "/news/<int:news_id>")
