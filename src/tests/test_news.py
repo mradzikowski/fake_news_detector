@@ -3,14 +3,14 @@ import json
 from src.api.models import News
 
 
-
 def test_add_news(test_app, test_database):
     client = test_app.test_client()
     resp = client.post(
         '/news',
         data=json.dumps({
             'title': 'Coronavirus cases has been lowered down.',
-            'url': 'https://www.tvp.info/54707513/tusk-pytany-przez-tvp-info-o-nowak-az-sie-zatrzymal-szokujaca-odpowiedz-szefa-po',
+            'url': 'https://www.tvp.info/54707513/tusk-pytany-przez-tvp-info-'
+                   'o-nowak-az-sie-zatrzymal-szokujaca-odpowiedz-szefa-po',
             'credibility': 10
         }),
         content_type='application/json',
@@ -80,8 +80,3 @@ def test_all_news(test_app, test_database, add_news):
     assert 'Payrise' in data[1]['title']
     assert 'payrise.com' in data[1]['url']
     assert 7.0 == data[1]['credibility']
-
-
-
-
-

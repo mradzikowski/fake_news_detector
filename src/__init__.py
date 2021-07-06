@@ -1,5 +1,4 @@
-from flask import Flask, jsonify
-from flask_restx import Resource, Api
+from flask import Flask
 import os
 from flask_sqlalchemy import SQLAlchemy
 
