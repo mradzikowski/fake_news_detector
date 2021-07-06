@@ -63,6 +63,26 @@ class _News(Resource):
         response_object["message"] = f"{news.title} was removed!"
         return response_object, 200
 
+    @api.expect(news, validate=True)
+    def put(self, news_id):
+        post_data = request.get_json()
+        title = post_data["title"]
+        url = post_data["url"]
+        credibility = post_data["credibility"]
+        response_object = {}
+
+        news = News.query.filter_by(id=news_id).first()
+
+        if not news:
+            api.abort(404, f"News {news_id} does not exist")
+
+        news.title = title
+        news.url = url
+        news.credibility = credibility
+
+        response_object["message"] = f"{news.id} was updated!"
+        return response_object, 200
+
 
 api.add_resource(NewsList, "/news")
 api.add_resource(_News, "/news/<int:news_id>")
