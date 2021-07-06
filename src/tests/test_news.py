@@ -80,3 +80,31 @@ def test_all_news(test_app, test_database, add_news):
     assert "Payrise" in data[1]["title"]
     assert "payrise.com" in data[1]["url"]
     assert 7.0 == data[1]["credibility"]
+
+
+def test_remove_news(test_app, test_database, add_news):
+    test_database.session.query(News).delete()
+    news = add_news(title="Coronavirus", url="coronavirus.com", credibility=9.0)
+    client = test_app.test_client()
+    resp_one = client.get("/news")
+    data = json.loads(resp_one.data.decode())
+    assert resp_one.status_code == 200
+    assert len(data) == 1
+
+    resp_two = client.delete(f"news/{news.id}")
+    data = json.loads(resp_two.data.decode())
+    assert resp_two.status_code == 200
+    assert 'Coronavirus was removed!' in data['message']
+
+    resp_three = client.get('/news')
+    data = json.loads(resp_three.data.decode())
+    assert resp_three.status_code == 200
+    assert len(data) == 0
+
+
+def test_remove_news_incorrect_id(test_app, test_database):
+    client = test_app.test_client()
+    resp = client.delete('/news/999')
+    data = json.loads(resp.data.decode())
+    assert resp.status_code == 404
+    assert "News 999 does not exist" in data["message"]
