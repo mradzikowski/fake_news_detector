@@ -9,11 +9,11 @@ class News(db.Model):
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     title = db.Column(db.String(128), nullable=False)
-    broadcaster = db.Column(db.String(128), nullable=True)
-    url = db.Column(db.String(128), nullable=True)
+    url = db.Column(db.String(128), nullable=False)
     date_added = db.Column(db.DateTime, default=func.now())
     credibility = db.Column(db.Float, default=0, nullable=False)
 
-    def __init__(self, title, credibility):
+    def __init__(self, title, url, credibility):
         self.title = title
+        self.url = url
         self.credibility = credibility
